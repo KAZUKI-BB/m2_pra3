@@ -35,6 +35,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <a href="<?php echo route('home'); ?>">管理画面に戻る</a>
 </body>
 </html>
 

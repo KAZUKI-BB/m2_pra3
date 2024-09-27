@@ -34,6 +34,7 @@
         </div>
         <button type="submit">登録</button>
     </form>
+    <a href="<?php echo url()->previous(); ?>">前の画面に戻る</a>
 </body>
 </html>
 

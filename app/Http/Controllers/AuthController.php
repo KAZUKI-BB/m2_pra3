@@ -4,20 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function login(Request $request){
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
-        $credentials = $request->only('email','password');
-
-        if(Auth::attempt($credentials)){
-            $user = Auth::user();
-            $token = $user->createToken('auth_token')->plainTextToken;
-            return response()->json(['token' => $token],200);
+        if (Auth::attempt($credentials)) {
+            // 認証成功後、セッションを作成しホーム画面にリダイレクト
+            return redirect()->intended('/home');
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        // 認証失敗時はログインページにリダイレクト
+        return back()->withErrors([
+            'email' => 'メールアドレスまたはパスワードが正しくありません。',
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect('/login');
     }
 }
+
